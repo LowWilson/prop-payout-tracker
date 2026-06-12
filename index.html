@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Prop Payout Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#05070d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Payout" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">SECURE CLOUD SYNC</p>
+        <h1>Payout Tracker</h1>
+      </div>
+      <button id="signOutBtn" class="ghost danger hidden">Logout</button>
+    </section>
+
+    <section id="loginView" class="login-card">
+      <p class="label">GOOGLE LOGIN REQUIRED</p>
+      <h2>PCとスマホでPayoutを同期</h2>
+      <p class="muted">Supabase + Googleログインで、自分のデータだけ保存・表示します。</p>
+      <button id="googleLoginBtn" class="primary">Continue with Google</button>
+      <p class="hint">※ 初回だけGoogle認証が必要です。</p>
+    </section>
+
+    <section id="appView" class="hidden">
+      <section class="total-card">
+        <div class="scanline"></div>
+        <p class="label">TOTAL PAYOUT</p>
+        <div id="totalAmount" class="total-amount">$0.00</div>
+        <div class="total-grid">
+          <div><span id="totalCount">0</span><p>Total Times</p></div>
+          <div><span id="firmCount">0</span><p>Prop Firms</p></div>
+          <div><span id="avgAmount">$0.00</span><p>Average</p></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Add Prop Firm</h2>
+        <div class="row">
+          <input id="firmNameInput" type="text" placeholder="例：Topstep / Apex / FTMO" />
+          <button id="addFirmBtn">Add</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Add Payout</h2>
+        <div class="stack">
+          <select id="firmSelect"></select>
+          <input id="amountInput" type="number" inputmode="decimal" placeholder="Amount USD" />
+          <input id="dateInput" type="date" />
+          <input id="memoInput" type="text" placeholder="Memo optional" />
+          <button id="addPayoutBtn" class="primary">Add Payout</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Prop Firms</h2>
+          <span id="statusText"></span>
+        </div>
+        <div id="firmList" class="firm-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <h2>History</h2>
+          <button id="clearHistoryBtn" class="ghost">Clear</button>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
