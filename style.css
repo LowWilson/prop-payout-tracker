@@ -95,14 +95,22 @@ select {
   gap: 8px;
 }
 
+.history-item {
+  grid-template-columns: 1fr 150px;
+  align-items: stretch;
+}
+
 .history-item > div:last-child {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-  min-height: 80px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: end;
+  height: 100%;
+}
+
+.history-item .amount {
+  align-self: start;
 }
 
 .history-item .tiny-btn {
-  margin-top: auto;
+  align-self: end;
 }
