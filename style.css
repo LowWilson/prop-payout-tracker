@@ -83,3 +83,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 select {
   background-image: none;
 }
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+}
