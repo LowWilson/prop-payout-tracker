@@ -102,3 +102,7 @@ select {
   justify-content: space-between;
   min-height: 80px;
 }
+
+.history-item .tiny-btn {
+  margin-top: auto;
+}
