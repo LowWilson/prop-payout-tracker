@@ -42,7 +42,6 @@ select option{background:#0b1020;color:white}
 .history-main{font-weight:900}.history-sub{color:var(--muted);font-size:12px;margin-top:2px}.amount{font-weight:900;color:var(--green)}
 .empty{color:var(--muted);padding:12px;text-align:center;border:1px dashed rgba(255,255,255,.12);border-radius:16px}
 
-
 /* iPhone Safari date input alignment fix */
 input,
 select {
