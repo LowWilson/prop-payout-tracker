@@ -4,6 +4,10 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let currentUser = null;
 let firms = [];
 let payouts = [];
+let currentUser = null;
+let firms = [];
+let payouts = [];
+let showAllHistory = false;
 
 function usd(n){return "$"+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
 function today(){return new Date().toISOString().slice(0,10);}
@@ -91,8 +95,10 @@ function render(){
     $("firmList").appendChild(card);
   });
 
-  $("historyList").innerHTML = payouts.length ? "" : `<div class="empty">まだpayout履歴なし</div>`;
-  payouts.forEach(p=>{
+  $("seeAllBtn").textContent = showAllHistory ? "Show Less" : "See All";
+　const displayPayouts = showAllHistory ? payouts : payouts.slice(0, 20);
+　$("historyList").innerHTML = displayPayouts.length ? "" : `<div class="empty">まだpayout履歴なし</div>`;
+　displayPayouts.forEach(p=>{
     const firm = firms.find(f => f.id === p.firm_id);
     const div = document.createElement("div");
     div.className = "history-item";
@@ -174,5 +180,9 @@ $("addFirmBtn").addEventListener("click", addFirm);
 $("addPayoutBtn").addEventListener("click", addPayout);
 $("clearHistoryBtn").addEventListener("click", clearHistory);
 $("firmNameInput").addEventListener("keydown", e=>{if(e.key==="Enter") addFirm();});
+$("seeAllBtn").addEventListener("click", () => {
+  showAllHistory = !showAllHistory;
+  render();
+});
 
 init();
