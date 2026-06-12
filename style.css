@@ -41,3 +41,45 @@ select option{background:#0b1020;color:white}
 .history-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.07)}
 .history-main{font-weight:900}.history-sub{color:var(--muted);font-size:12px;margin-top:2px}.amount{font-weight:900;color:var(--green)}
 .empty{color:var(--muted);padding:12px;text-align:center;border:1px dashed rgba(255,255,255,.12);border-radius:16px}
+
+
+/* iPhone Safari date input alignment fix */
+input,
+select {
+  height: 64px;
+  min-height: 64px;
+  line-height: 1.2;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="date"] {
+  display: block;
+  width: 100%;
+  height: 64px;
+  min-height: 64px;
+  padding: 14px;
+  color: var(--text);
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 16px;
+  line-height: 1.2;
+  -webkit-appearance: none;
+  appearance: none;
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  min-height: 1.2em;
+  line-height: 1.2;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: .75;
+  filter: invert(1);
+}
+
+select {
+  background-image: none;
+}
