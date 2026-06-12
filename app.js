@@ -95,7 +95,9 @@ function render(){
     $("firmList").appendChild(card);
   });
 
+  if ($("seeAllBtn")) {
   $("seeAllBtn").textContent = showAllHistory ? "Show Less" : "See All";
+}
 　const displayPayouts = showAllHistory ? payouts : payouts.slice(0, 20);
 　$("historyList").innerHTML = displayPayouts.length ? "" : `<div class="empty">まだpayout履歴なし</div>`;
 　displayPayouts.forEach(p=>{
@@ -180,9 +182,12 @@ $("addFirmBtn").addEventListener("click", addFirm);
 $("addPayoutBtn").addEventListener("click", addPayout);
 $("clearHistoryBtn").addEventListener("click", clearHistory);
 $("firmNameInput").addEventListener("keydown", e=>{if(e.key==="Enter") addFirm();});
-$("seeAllBtn").addEventListener("click", () => {
-  showAllHistory = !showAllHistory;
-  render();
-});
+const seeAllBtn = $("seeAllBtn");
+if (seeAllBtn) {
+  seeAllBtn.addEventListener("click", () => {
+    showAllHistory = !showAllHistory;
+    render();
+  });
+}
 
 init();
