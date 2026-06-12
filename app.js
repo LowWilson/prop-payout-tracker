@@ -4,9 +4,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let currentUser = null;
 let firms = [];
 let payouts = [];
-let currentUser = null;
-let firms = [];
-let payouts = [];
+
 let showAllHistory = false;
 
 function usd(n){return "$"+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -96,11 +94,14 @@ function render(){
   });
 
   if ($("seeAllBtn")) {
-  $("seeAllBtn").textContent = showAllHistory ? "Show Less" : "See All";
-}
-　const displayPayouts = showAllHistory ? payouts : payouts.slice(0, 20);
-　$("historyList").innerHTML = displayPayouts.length ? "" : `<div class="empty">まだpayout履歴なし</div>`;
-　displayPayouts.forEach(p=>{
+    $("seeAllBtn").textContent = showAllHistory ? "Show Less" : "See All";
+  }
+
+  const displayPayouts = showAllHistory ? payouts : payouts.slice(0, 20);
+
+  $("historyList").innerHTML = displayPayouts.length ? "" : `<div class="empty">まだpayout履歴なし</div>`;
+
+  displayPayouts.forEach(p=>{
     const firm = firms.find(f => f.id === p.firm_id);
     const div = document.createElement("div");
     div.className = "history-item";
@@ -115,7 +116,6 @@ function render(){
       </div>`;
     $("historyList").appendChild(div);
   });
-}
 
 async function addFirm(){
   const name = $("firmNameInput").value.trim();
