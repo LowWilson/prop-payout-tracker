@@ -258,10 +258,14 @@ function render(){
       <div>
         <div class="history-main">${escapeHtml(firm?.name||p.firm_name||"Deleted Firm")}</div>
         <div class="history-sub">${p.payout_date||""}${p.memo?" ・ "+escapeHtml(p.memo):""}</div>
-        <div class="jpy-line">${rateLine}</div>
+        <div class="rate-line">${rate ? rate.toFixed(2) : "概算 " + usdJpyRate.toFixed(2)}円/USD</div>
       </div>
-      <div>
-        <div class="amount">${usd(p.amount)}</div>
+    
+      <div class="history-money">
+        <div>
+          <div class="amount">${usd(p.amount)}</div>
+          <div class="amount-jpy">${yen(amountJpy)}</div>
+        </div>
         <button class="ghost danger tiny-btn" data-delete-payout="${p.id}">Delete</button>
       </div>
     `;
