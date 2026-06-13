@@ -78,3 +78,10 @@ select{background-image:none}
 .firm-list {
   margin-bottom: 24px;
 }
+
+.jpy-line {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.45;
+}
