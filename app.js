@@ -3,6 +3,7 @@ const $=id=>document.getElementById(id);
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let currentUser=null,firms=[],payouts=[],showAllHistory=false;
 let filters={firmId:"all",year:"all",month:"all"};
+let usdJpyRate = 150;
 
 function usd(n){return "$"+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
 function today(){return new Date().toISOString().slice(0,10);}
@@ -22,14 +23,25 @@ function getFilteredPayouts(){
 
 async function init(){
   $("dateInput").value=today();
+
   const {data}=await sb.auth.getSession();
   currentUser=data.session?.user||null;
+
   updateAuthView();
-  if(currentUser) await loadData();
+
+  if(currentUser) {
+    await loadData();
+  }
+
+  await fetchUsdJpyRate();
+
   sb.auth.onAuthStateChange(async(_event,session)=>{
     currentUser=session?.user||null;
     updateAuthView();
-    if(currentUser) await loadData();
+
+    if(currentUser) {
+      await loadData();
+    }
   });
 }
 
@@ -113,6 +125,76 @@ function renderMonthly(list){
   });
 }
 
+async function fetchUsdJpyRate(){
+  try {
+    const res = await fetch("https://open.er-api.com/v6/latest/USD");
+    const data = await res.json();
+
+    if(data && data.rates && data.rates.JPY){
+      usdJpyRate = Number(data.rates.JPY);
+      render();
+    }
+  } catch (error) {
+    console.log("USDJPY取得失敗:", error);
+  }
+}
+
+function yen(n){
+  return "¥" + Math.round(Number(n || 0)).toLocaleString();
+}
+
+function estimateTax(incomeJpy){
+  if(incomeJpy <= 480000) return 0;
+
+  let rate = 0.15;
+
+  if(incomeJpy > 1949000) rate = 0.20;
+  if(incomeJpy > 3299000) rate = 0.30;
+  if(incomeJpy > 6949000) rate = 0.33;
+  if(incomeJpy > 9000000) rate = 0.43;
+  if(incomeJpy > 18000000) rate = 0.50;
+
+  return incomeJpy * rate;
+}
+
+function renderTaxStatus(){
+  const currentYear = new Date().getFullYear().toString();
+
+  const yearlyPayouts = payouts.filter(p => payoutYear(p) === currentYear);
+  const yearlyUsd = totalAmount(yearlyPayouts);
+  const incomeJpy = yearlyUsd * usdJpyRate;
+
+  const tax = estimateTax(incomeJpy);
+  const reserve = tax * 1.15;
+
+  $("usdJpyRate").textContent = usdJpyRate.toFixed(2);
+  $("taxJpyIncome").textContent = yen(incomeJpy);
+  $("estimatedTax").textContent = yen(tax);
+  $("taxReserve").textContent = yen(reserve);
+
+  const warnings = [];
+
+  if(incomeJpy > 450000){
+    warnings.push("⚠️ 住民税ラインを超える可能性があります。");
+  }
+
+  if(incomeJpy > 480000){
+    warnings.push("⚠️ 所得税・確定申告が必要になる可能性があります。");
+  }
+
+  if(incomeJpy > 1300000){
+    warnings.push("⚠️ 国民健康保険料や扶養条件への影響を確認してください。");
+  }
+
+  if(warnings.length === 0){
+    $("taxWarnings").innerHTML = `<div class="tax-ok">✅ 現時点では大きな税金ラインは超えていない可能性があります。</div>`;
+  } else {
+    $("taxWarnings").innerHTML = warnings
+      .map(w => `<div class="tax-warning">${w}</div>`)
+      .join("");
+  }
+}
+
 function render(){
   const totalCount=payouts.length,allAmount=totalAmount(payouts);
   $("totalAmount").textContent=usd(allAmount);
@@ -120,7 +202,7 @@ function render(){
   $("firmCount").textContent=firms.length;
   $("avgAmount").textContent=usd(totalCount?allAmount/totalCount:0);
   $("statusText").textContent=`${firms.length} firms / ${totalCount} payouts`;
-  renderFilters();renderAnalytics();
+  renderFilters();renderAnalytics();renderTaxStatus();
 
   $("firmSelect").innerHTML="";
   firms.forEach(f=>{const opt=document.createElement("option");opt.value=f.id;opt.textContent=f.name;$("firmSelect").appendChild(opt);});
@@ -206,4 +288,6 @@ if(filterFirm){
     render();
   });
 }
+$("refreshRateBtn").addEventListener("click", fetchUsdJpyRate);
 init();
+
