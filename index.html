@@ -42,30 +42,6 @@
       </section>
 
       <section class="panel">
-        <div class="section-head">
-          <h2>Analytics</h2>
-          <span id="analyticsLabel">All data</span>
-        </div>
-        <div class="filter-grid">
-          <select id="filterFirmSelect"></select>
-          <select id="filterYearSelect"></select>
-          <select id="filterMonthSelect"></select>
-        </div>
-        <div class="analytics-grid">
-          <div class="stat"><strong id="filteredAmount">$0.00</strong><span>Filtered Total</span></div>
-          <div class="stat"><strong id="filteredCount">0</strong><span>Filtered Times</span></div>
-        </div>
-        <div class="summary-block">
-          <div class="section-head compact"><h3>Yearly</h3></div>
-          <div id="yearlyList" class="summary-list"></div>
-        </div>
-        <div class="summary-block">
-          <div class="section-head compact"><h3>Monthly</h3></div>
-          <div id="monthlyList" class="summary-list"></div>
-        </div>
-      </section>
-
-      <section class="panel">
         <h2>Add Prop Firm</h2>
         <div class="row">
           <input id="firmNameInput" type="text" placeholder="例：Topstep / Apex / FTMO" />
@@ -103,6 +79,30 @@
         <div id="historyList" class="history-list"></div>
       </section>
     </section>
+
+     <section class="panel">
+        <div class="section-head">
+          <h2>Analytics</h2>
+          <span id="analyticsLabel">All data</span>
+        </div>
+        <div class="filter-grid">
+          <select id="filterFirmSelect"></select>
+          <select id="filterYearSelect"></select>
+          <select id="filterMonthSelect"></select>
+        </div>
+        <div class="analytics-grid">
+          <div class="stat"><strong id="filteredAmount">$0.00</strong><span>Filtered Total</span></div>
+          <div class="stat"><strong id="filteredCount">0</strong><span>Filtered Times</span></div>
+        </div>
+        <div class="summary-block">
+          <div class="section-head compact"><h3>Yearly</h3></div>
+          <div id="yearlyList" class="summary-list"></div>
+        </div>
+        <div class="summary-block">
+          <div class="section-head compact"><h3>Monthly</h3></div>
+          <div id="monthlyList" class="summary-list"></div>
+        </div>
+      </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
