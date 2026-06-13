@@ -137,6 +137,8 @@ async function fetchUsdJpyRate(){
   } catch (error) {
     console.log("USDJPY取得失敗:", error);
   }
+
+  return usdJpyRate;
 }
 
 async function fetchHistoricalUsdJpyRate(dateStr){
@@ -339,6 +341,17 @@ if(filterFirm){
     render();
   });
 }
+$("filterYearSelect").addEventListener("change", e=>{
+  filters.year = e.target.value;
+  showAllHistory = false;
+  render();
+});
+
+$("filterMonthSelect").addEventListener("change", e=>{
+  filters.month = e.target.value;
+  showAllHistory = false;
+  render();
+});
 $("refreshRateBtn").addEventListener("click", fetchUsdJpyRate);
 init();
 
