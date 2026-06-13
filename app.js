@@ -250,17 +250,16 @@ function render(){
     const rate = Number(p.usd_jpy_rate || 0);
     const amountJpy = jpyAmountForPayout(p);
     
-    const rateLine = rate
-      ? `${rate.toFixed(2)}円/USD ・ ${yen(amountJpy)}`
-      : `概算 ${usdJpyRate.toFixed(2)}円/USD ・ ${yen(amountJpy)}`;
+   const rateLine = rate
+    ? `${rate.toFixed(2)}円/USD`
+    : `概算 ${usdJpyRate.toFixed(2)}円/USD`;
     
     div.innerHTML=`
       <div>
         <div class="history-main">${escapeHtml(firm?.name||p.firm_name||"Deleted Firm")}</div>
         <div class="history-sub">${p.payout_date||""}${p.memo?" ・ "+escapeHtml(p.memo):""}</div>
-        <div class="rate-line">${rate ? rate.toFixed(2) : "概算 " + usdJpyRate.toFixed(2)}円/USD</div>
+        <div class="rate-line">${rateText}</div>
       </div>
-    
       <div class="history-money">
         <div>
           <div class="amount">${usd(p.amount)}</div>
