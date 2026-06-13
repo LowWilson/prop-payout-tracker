@@ -91,6 +91,7 @@ select{background-image:none}
   grid-template-rows: 1fr auto;
   justify-items: end;
   height: 100%;
+  text-align: right;
 }
 
 .amount-jpy {
@@ -98,6 +99,7 @@ select{background-image:none}
   color: var(--muted);
   margin-top: 4px;
   font-weight: 800;
+  text-align: right;
 }
 
 .rate-line {
