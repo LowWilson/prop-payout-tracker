@@ -42,5 +42,35 @@ select option{background:#0b1020;color:white}
 input[type="date"]{color-scheme:dark}
 input[type="date"]::-webkit-date-and-time-value{text-align:left;min-height:1.2em;line-height:1.2}
 input[type="date"]::-webkit-calendar-picker-indicator{opacity:.75;filter:invert(1)}
+.tax-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tax-warnings {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tax-warning {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 206, 69, 0.12);
+  border: 1px solid rgba(255, 206, 69, 0.28);
+  color: #ffdf7a;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tax-ok {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(77, 255, 154, 0.10);
+  border: 1px solid rgba(77, 255, 154, 0.25);
+  color: var(--green);
+  font-size: 13px;
+}
 select{background-image:none}
 @media(max-width:520px){.filter-grid{grid-template-columns:1fr}.history-item{grid-template-columns:1fr 118px}.total-amount{font-size:42px}}
