@@ -125,6 +125,22 @@ function renderMonthly(list){
   });
 }
 
+async function fetchUsdJpyRate(){
+  try {
+    const res = await fetch("https://open.er-api.com/v6/latest/USD");
+    const data = await res.json();
+
+    if(data && data.rates && data.rates.JPY){
+      usdJpyRate = Number(data.rates.JPY);
+      render();
+    }
+  } catch (error) {
+    console.log("USDJPY取得失敗:", error);
+  }
+
+  return usdJpyRate;
+}
+
 async function fetchHistoricalUsdJpyRate(dateStr){
   try{
     const res = await fetch(`https://api.frankfurter.app/${dateStr}?from=USD&to=JPY`);
