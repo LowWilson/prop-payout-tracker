@@ -103,6 +103,41 @@
           <div id="monthlyList" class="summary-list"></div>
         </div>
       </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Tax Status</h2>
+        <button id="refreshRateBtn" class="ghost">Rate更新</button>
+      </div>
+    
+      <div class="tax-grid">
+        <div class="stat">
+          <strong id="usdJpyRate">--</strong>
+          <span>USD/JPY</span>
+        </div>
+    
+        <div class="stat">
+          <strong id="taxJpyIncome">¥0</strong>
+          <span>推定JPY利益</span>
+        </div>
+    
+        <div class="stat">
+          <strong id="estimatedTax">¥0</strong>
+          <span>推定税額</span>
+        </div>
+    
+        <div class="stat">
+          <strong id="taxReserve">¥0</strong>
+          <span>税金用確保目安</span>
+        </div>
+      </div>
+    
+      <div id="taxWarnings" class="tax-warnings"></div>
+    
+      <p class="hint">
+        ※ 概算です。最終判断は税務署・税理士に確認してください。
+      </p>
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
