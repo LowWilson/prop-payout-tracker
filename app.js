@@ -125,17 +125,18 @@ function renderMonthly(list){
   });
 }
 
-async function fetchUsdJpyRate(){
-  try {
-    const res = await fetch("https://open.er-api.com/v6/latest/USD");
+async function fetchHistoricalUsdJpyRate(dateStr){
+  try{
+    const res = await fetch(`https://api.frankfurter.app/${dateStr}?from=USD&to=JPY`);
     const data = await res.json();
 
+    console.log("rate date:", dateStr, data);
+
     if(data && data.rates && data.rates.JPY){
-      usdJpyRate = Number(data.rates.JPY);
-      render();
+      return Number(data.rates.JPY);
     }
-  } catch (error) {
-    console.log("USDJPY取得失敗:", error);
+  }catch(error){
+    console.log("過去USDJPY取得失敗:", error);
   }
 
   return usdJpyRate;
