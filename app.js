@@ -139,6 +139,29 @@ async function fetchUsdJpyRate(){
   }
 }
 
+async function fetchHistoricalUsdJpyRate(dateStr){
+  try{
+    const res = await fetch(`https://api.frankfurter.app/${dateStr}?from=USD&to=JPY`);
+    const data = await res.json();
+
+    if(data && data.rates && data.rates.JPY){
+      return Number(data.rates.JPY);
+    }
+  }catch(error){
+    console.log("過去USDJPY取得失敗:", error);
+  }
+
+  return usdJpyRate;
+}
+
+function jpyAmountForPayout(p){
+  return Number(p.amount_jpy || 0) || Number(p.amount || 0) * Number(p.usd_jpy_rate || usdJpyRate);
+}
+
+function totalJpyAmount(list){
+  return list.reduce((sum, p) => sum + jpyAmountForPayout(p), 0);
+}
+
 function yen(n){
   return "¥" + Math.round(Number(n || 0)).toLocaleString();
 }
@@ -161,8 +184,7 @@ function renderTaxStatus(){
   const currentYear = new Date().getFullYear().toString();
 
   const yearlyPayouts = payouts.filter(p => payoutYear(p) === currentYear);
-  const yearlyUsd = totalAmount(yearlyPayouts);
-  const incomeJpy = yearlyUsd * usdJpyRate;
+  const incomeJpy = totalJpyAmount(yearlyPayouts);
 
   const tax = estimateTax(incomeJpy);
   const reserve = tax * 1.15;
@@ -240,7 +262,19 @@ async function addFirm(){
 async function addPayout(){
   const firmId=$("firmSelect").value,firm=firms.find(f=>f.id===firmId),amount=Number($("amountInput").value);
   if(!firm||!amount||amount<=0||!currentUser)return;
-  const {error}=await sb.from("payouts").insert({user_id:currentUser.id,firm_id:firmId,firm_name:firm.name,amount,payout_date:$("dateInput").value||today(),memo:$("memoInput").value.trim()});
+  const payoutDate = $("dateInput").value || today();
+  const rate = await fetchHistoricalUsdJpyRate(payoutDate);
+  const amountJpy = amount * rate;
+  const {error}=await sb.from("payouts").insert({
+    user_id:currentUser.id,
+    firm_id:firmId,
+    firm_name:firm.name,
+    amount,
+    payout_date:payoutDate,
+    memo:$("memoInput").value.trim(),
+    usd_jpy_rate:rate,
+    amount_jpy:amountJpy
+  });
   if(error){alert(error.message);return;}
   $("amountInput").value="";$("memoInput").value="";$("dateInput").value=today();await loadData();
 }
