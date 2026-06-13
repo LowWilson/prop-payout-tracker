@@ -48,8 +48,10 @@ async function signOut(){await sb.auth.signOut();}
 async function loadData(){
   const {data:firmData,error:firmErr}=await sb.from("prop_firms").select("*").order("created_at",{ascending:true});
   if(firmErr){alert("firm読み込みエラー: "+firmErr.message);return;}
-  const {data:payoutData,error:payoutErr}=await sb.from("payouts").select("*").order("created_at",{ascending:false});
+
+  const {data:payoutData,error:payoutErr}=await sb.from("payouts").select("*").order("payout_date",{ascending:false});
   if(payoutErr){alert("payout読み込みエラー: "+payoutErr.message);return;}
+
   firms=firmData||[];
   payouts=payoutData||[];
   render();
