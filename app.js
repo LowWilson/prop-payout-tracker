@@ -246,64 +246,44 @@ function render(){
   const displayPayouts=showAllHistory?filteredForHistory:filteredForHistory.slice(0,20);
   $("historyList").innerHTML=displayPayouts.length?"":'<div class="empty">まだpayout履歴なし</div>';
   displayPayouts.forEach(p => {
-  const firm = firms.find(f => f.id === p.firm_id);
-  const div = document.createElement("div");
-  div.className = "history-item";
-
-  const rate = Number(p.usd_jpy_rate || 0);
-  const amountJpy = jpyAmountForPayout(p);
-
-  const rateText = rate
-    ? `${rate.toFixed(2)}円/USD`
-    : `概算 ${usdJpyRate.toFixed(2)}円/USD`;
-
-  div.innerHTML = `
-    <div>
-      <div class="history-main">
-        ${escapeHtml(firm?.name || p.firm_name || "Deleted Firm")}
-      </div>
-
-      <div class="history-sub">
-        ${p.payout_date || ""}
-        ${p.memo ? " ・ " + escapeHtml(p.memo) : ""}
-      </div>
-
-      <div class="rate-line">
-        ${rateText}
-      </div>
-    </div>
-
-    <div class="history-money">
+    const firm = firms.find(f => f.id === p.firm_id);
+    const div = document.createElement("div");
+    div.className = "history-item";
+  
+    const rate = Number(p.usd_jpy_rate || 0);
+    const amountJpy = jpyAmountForPayout(p);
+  
+    const rateText = rate
+      ? `${rate.toFixed(2)}円/USD`
+      : `概算 ${usdJpyRate.toFixed(2)}円/USD`;
+  
+    div.innerHTML = `
       <div>
-        <div class="amount">
-          ${usd(p.amount)}
-        </div>
-
-        <div class="amount-jpy">
-          ${yen(amountJpy)}
-        </div>
+        <div class="history-main">${escapeHtml(firm?.name || p.firm_name || "Deleted Firm")}</div>
+        <div class="history-sub">${p.payout_date || ""}${p.memo ? " ・ " + escapeHtml(p.memo) : ""}</div>
+        <div class="rate-line">${rateText}</div>
       </div>
-
-      <button
-        class="ghost danger tiny-btn"
-        data-delete-payout="${p.id}"
-      >
-        Delete
-      </button>
-    </div>
-  `;
-
-  $("historyList").appendChild(div);
-});
-
-async function addFirm(){
-  const name=$("firmNameInput").value.trim();
-  if(!name||!currentUser)return;
-  const color=colors[firms.length%colors.length];
-  const {error}=await sb.from("prop_firms").insert({name,color,user_id:currentUser.id});
-  if(error){alert(error.message);return;}
-  $("firmNameInput").value="";await loadData();
-}
+  
+      <div class="history-money">
+        <div>
+          <div class="amount">${usd(p.amount)}</div>
+          <div class="amount-jpy">${yen(amountJpy)}</div>
+        </div>
+        <button class="ghost danger tiny-btn" data-delete-payout="${p.id}">Delete</button>
+      </div>
+    `;
+  
+    $("historyList").appendChild(div);
+  });
+  
+  async function addFirm(){
+    const name=$("firmNameInput").value.trim();
+    if(!name||!currentUser)return;
+    const color=colors[firms.length%colors.length];
+    const {error}=await sb.from("prop_firms").insert({name,color,user_id:currentUser.id});
+    if(error){alert(error.message);return;}
+    $("firmNameInput").value="";await loadData();
+  }
 
 async function addPayout(){
   const firmId=$("firmSelect").value,firm=firms.find(f=>f.id===firmId),amount=Number($("amountInput").value);
