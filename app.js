@@ -245,7 +245,24 @@ function render(){
   displayPayouts.forEach(p=>{
     const firm=firms.find(f=>f.id===p.firm_id);
     const div=document.createElement("div");div.className="history-item";
-    div.innerHTML=`<div><div class="history-main">${escapeHtml(firm?.name||p.firm_name||"Deleted Firm")}</div><div class="history-sub">${p.payout_date||""}${p.memo?" ・ "+escapeHtml(p.memo):""}</div></div><div><div class="amount">${usd(p.amount)}</div><button class="ghost danger tiny-btn" data-delete-payout="${p.id}">Delete</button></div>`;
+    const rate = Number(p.usd_jpy_rate || 0);
+    const amountJpy = jpyAmountForPayout(p);
+    
+    const rateLine = rate
+      ? `${rate.toFixed(2)}円/USD ・ ${yen(amountJpy)}`
+      : `概算 ${usdJpyRate.toFixed(2)}円/USD ・ ${yen(amountJpy)}`;
+    
+    div.innerHTML=`
+      <div>
+        <div class="history-main">${escapeHtml(firm?.name||p.firm_name||"Deleted Firm")}</div>
+        <div class="history-sub">${p.payout_date||""}${p.memo?" ・ "+escapeHtml(p.memo):""}</div>
+        <div class="jpy-line">${rateLine}</div>
+      </div>
+      <div>
+        <div class="amount">${usd(p.amount)}</div>
+        <button class="ghost danger tiny-btn" data-delete-payout="${p.id}">Delete</button>
+      </div>
+    `;
     $("historyList").appendChild(div);
   });
 }
