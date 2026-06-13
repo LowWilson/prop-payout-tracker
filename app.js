@@ -333,13 +333,36 @@ document.addEventListener("click",e=>{
   if(payoutId)deletePayout(payoutId);
 });
 
-$("googleLoginBtn").addEventListener("click",signIn);
-$("signOutBtn").addEventListener("click",signOut);
-$("addFirmBtn").addEventListener("click",addFirm);
-$("addPayoutBtn").addEventListener("click",addPayout);
-$("clearHistoryBtn").addEventListener("click",clearHistory);
-$("firmNameInput").addEventListener("keydown",e=>{if(e.key==="Enter")addFirm();});
-$("seeAllBtn").addEventListener("click",()=>{showAllHistory=!showAllHistory;render();});
+const googleLoginBtn = $("googleLoginBtn");
+if (googleLoginBtn) googleLoginBtn.addEventListener("click", signIn);
+
+const signOutBtn = $("signOutBtn");
+if (signOutBtn) signOutBtn.addEventListener("click", signOut);
+
+const addFirmBtn = $("addFirmBtn");
+if (addFirmBtn) addFirmBtn.addEventListener("click", addFirm);
+
+const addPayoutBtn = $("addPayoutBtn");
+if (addPayoutBtn) addPayoutBtn.addEventListener("click", addPayout);
+
+const clearHistoryBtn = $("clearHistoryBtn");
+if (clearHistoryBtn) clearHistoryBtn.addEventListener("click", clearHistory);
+
+const firmNameInput = $("firmNameInput");
+if (firmNameInput) {
+  firmNameInput.addEventListener("keydown", e => {
+    if(e.key==="Enter") addFirm();
+  });
+}
+
+const seeAllBtn = $("seeAllBtn");
+if (seeAllBtn) {
+  seeAllBtn.addEventListener("click", () => {
+    showAllHistory = !showAllHistory;
+    render();
+  });
+}
+
 const filterFirm = $("filterFirmSelect");
 if(filterFirm){
   filterFirm.addEventListener("change", e=>{
@@ -348,17 +371,29 @@ if(filterFirm){
     render();
   });
 }
-$("filterYearSelect").addEventListener("change", e=>{
-  filters.year = e.target.value;
-  showAllHistory = false;
-  render();
-});
 
-$("filterMonthSelect").addEventListener("change", e=>{
-  filters.month = e.target.value;
-  showAllHistory = false;
-  render();
-});
-$("refreshRateBtn").addEventListener("click", fetchUsdJpyRate);
+const filterYear = $("filterYearSelect");
+if(filterYear){
+  filterYear.addEventListener("change", e=>{
+    filters.year = e.target.value;
+    showAllHistory = false;
+    render();
+  });
+}
+
+const filterMonth = $("filterMonthSelect");
+if(filterMonth){
+  filterMonth.addEventListener("change", e=>{
+    filters.month = e.target.value;
+    showAllHistory = false;
+    render();
+  });
+}
+
+const refreshRateBtn = $("refreshRateBtn");
+if(refreshRateBtn){
+  refreshRateBtn.addEventListener("click", fetchUsdJpyRate);
+}
+
 init();
 
