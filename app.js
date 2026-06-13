@@ -142,20 +142,6 @@ async function fetchHistoricalUsdJpyRate(dateStr){
   return usdJpyRate;
 }
 
-async function fetchHistoricalUsdJpyRate(dateStr){
-  try{
-    const res = await fetch(`https://api.frankfurter.app/${dateStr}?from=USD&to=JPY`);
-    const data = await res.json();
-
-    if(data && data.rates && data.rates.JPY){
-      return Number(data.rates.JPY);
-    }
-  }catch(error){
-    console.log("過去USDJPY取得失敗:", error);
-  }
-
-  return usdJpyRate;
-}
 
 function jpyAmountForPayout(p){
   return Number(p.amount_jpy || 0) || Number(p.amount || 0) * Number(p.usd_jpy_rate || usdJpyRate);
@@ -275,6 +261,7 @@ function render(){
   
     $("historyList").appendChild(div);
   });
+}
   
   async function addFirm(){
     const name=$("firmNameInput").value.trim();
