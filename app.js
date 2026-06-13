@@ -196,7 +196,12 @@ $("addPayoutBtn").addEventListener("click",addPayout);
 $("clearHistoryBtn").addEventListener("click",clearHistory);
 $("firmNameInput").addEventListener("keydown",e=>{if(e.key==="Enter")addFirm();});
 $("seeAllBtn").addEventListener("click",()=>{showAllHistory=!showAllHistory;render();});
-$("filterFirmSelect").addEventListener("change",e=>{filters.firmId=e.target.value;showAllHistory=false;render();});
-$("filterYearSelect").addEventListener("change",e=>{filters.year=e.target.value;showAllHistory=false;render();});
-$("filterMonthSelect").addEventListener("change",e=>{filters.month=e.target.value;showAllHistory=false;render();});
+const filterFirm = $("filterFirmSelect");
+if(filterFirm){
+  filterFirm.addEventListener("change", e=>{
+    filters.firmId = e.target.value;
+    showAllHistory = false;
+    render();
+  });
+}
 init();
